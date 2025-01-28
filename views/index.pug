@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  if documents.length
+    each document in documents
+      table.table.table-bordered.table-striped.mt-5
+        thead.table-dark
+          tr
+            th Titre
+            th Auteur
+            th Emprunt
+        tbody
+          each document in documents
+            tr
+              td= document.fields.titre_avec_lien_vers_le_catalogue
+              td= document.fields.auteur
+           
+    else
+      p Aucun document disponible :(
