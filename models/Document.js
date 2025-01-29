@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const documentSchema = new mongoose.Schema({
   datasetid: String,
-  recordid: String,
+  recordid: String,''
   fields: {
     nombre_de_reservations: Number,
     rang: Number,

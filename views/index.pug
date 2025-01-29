@@ -29,6 +29,8 @@ block content
             if document.fields.dispo === true
               td.d-flex.justify-content-center
                 button(class='btnEmprunt', onclick='bookAction()') Emprunter
+              td.d-flex.justify-content-center
+                button(class='btnEmprunt', onclick='bookAction()') Emprunter
             if user["roles"].includes("ROLE_ADMIN")
               td
                 form(action="/documents/delete" method="POST")
@@ -36,4 +38,3 @@ block content
                   button.btn.btn-danger(type="submit") X
   else
     p Aucun document disponible :(
- 
