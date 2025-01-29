@@ -1,6 +1,13 @@
 # Medialogue
 
+**Installer le projet**
 
+1) Copier-coller le .env.example en .env et remplir les variables :
+
+``
+DATABASE correspond à l'URL vers la base de données MongoDB
+SESSION_SECRET correspond à une phrase secrète pour crypter les données stockées en session
+``
 
 ## Getting started
 

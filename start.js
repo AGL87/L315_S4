@@ -1,8 +1,7 @@
-//making database connexion info available
 require('dotenv').config();
 
-//declaring which model to use
 require('./models/Document');
+require('./models/User');
 const mongoose = require('mongoose');
 
 
