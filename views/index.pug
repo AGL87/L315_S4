@@ -13,5 +13,7 @@ block content
           tr
             td= document.fields.titre_avec_lien_vers_le_catalogue
             td= document.fields.auteur
+            if document.fields.dispo === true
+            td Disponible
   else
     p Aucun document disponible :(
