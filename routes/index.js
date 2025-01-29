@@ -10,7 +10,7 @@ const { MongoClient } = require("mongodb");
 
 router.get('/documents', (req, res) => {
     console.log('route /documents atteinte');
-    Document.find()
+    Document.find().limit(10)
         .then((documents)=>{
             console.log(documents);
 
