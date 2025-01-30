@@ -19,7 +19,7 @@ block content
             th Suppression
       tbody
         each document in documents
-          tr
+          tr(id=`${document.recordid}`)
             td= document.fields.titre_avec_lien_vers_le_catalogue
             if !document.fields.auteur
               td
@@ -27,8 +27,6 @@ block content
             else
               td= document.fields.auteur
             if document.fields.dispo === true
-              td.d-flex.justify-content-center
-                button(class='btnEmprunt', onclick='bookAction()') Emprunter
               td.d-flex.justify-content-center
                 button(class='btnEmprunt', onclick='bookAction()') Emprunter
             if user["roles"].includes("ROLE_ADMIN")

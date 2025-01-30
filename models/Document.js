@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const documentSchema = new mongoose.Schema({
   datasetid: String,
-  recordid: String,''
-  fields: {
+  recordid: String,
+  fields:{
     nombre_de_reservations: Number,
     rang: Number,
     titre_avec_lien_vers_le_catalogue: String,
