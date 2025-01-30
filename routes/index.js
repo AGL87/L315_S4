@@ -18,10 +18,8 @@ router.get('/documents', isAuthenticated, (req, res) => {
 
     Document.find().limit(10)
         .then((documents) => {
-            console.log(documents);
-            res.render('index', {
-                title: 'Medialogue', 
-                documents,
+            //console.log(documents);
+          res.render('index', {title: 'Medialogue', documents,
                 user: req.session.user,
                 isLoggedIn: !!req.session.user // Ajoute un booléen pour indiquer si l'utilisateur est connecté
             });

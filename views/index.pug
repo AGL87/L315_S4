@@ -21,6 +21,8 @@ block content
             else
               td= document.fields.auteur
             if document.fields.dispo === true
-              td Disponible
+              td.d-flex.justify-content-center
+                button(class='btnEmprunt', onclick='bookAction()') Emprunter
   else
     p Aucun document disponible :(
+ 
