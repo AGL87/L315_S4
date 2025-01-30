@@ -4,6 +4,10 @@ block content
   if success
     .alert.alert-success.mb-4= success
   p= "Vous êtes connecté en tant que " + user["firstname"]
+
+  if user["roles"].includes("ROLE_ADMIN")
+    button.btn.btn-success.m-2(onclick="window.location.href='/documents/new'") Ajouter un document
+
   if documents.length
     table.table.table-bordered.table-striped.mt-5
       thead.table-dark
@@ -11,11 +15,13 @@ block content
           th Titre
           th Auteur
           th Emprunt
+          if user["roles"].includes("ROLE_ADMIN")
+            th Suppression
       tbody
         each document in documents
           tr
             td= document.fields.titre_avec_lien_vers_le_catalogue
-            if document.fields.auteur.length === 0
+            if !document.fields.auteur
               td
                 i="Auteur inconnu"
             else
@@ -23,6 +29,11 @@ block content
             if document.fields.dispo === true
               td.d-flex.justify-content-center
                 button(class='btnEmprunt', onclick='bookAction()') Emprunter
+            if user["roles"].includes("ROLE_ADMIN")
+              td
+                form(action="/documents/delete" method="POST")
+                  input(type="hidden" name="id" value=document._id)
+                  button.btn.btn-danger(type="submit") X
   else
     p Aucun document disponible :(
  

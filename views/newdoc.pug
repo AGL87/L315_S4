@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  h2.text-center.mb-4 Ajouter un document
+
+  - data = data || {}
+
+  div.form-wrapper
+    if errors
+      ul.error-messages
+        for error in errors
+          li= error.msg
+
+    form(action="/documents/new" method="POST")
+      div.mb-3
+        label(for="titre" class="form-label") Titre
+        input(
+          type="text"
+          class="form-control"
+          id="titre"
+          name="fields[titre_avec_lien_vers_le_catalogue]"
+          placeholder="Titre du document"
+          value=data.titre_avec_lien_vers_le_catalogue
+        )
+      div.mb-3
+        label(for="auteur" class="form-label") Auteur
+        input(
+          type="text"
+          class="form-control"
+          id="auteur"
+          name="fields[auteur]"
+          placeholder="Auteur du document"
+          value=data.auteur
+        )
+
+      div.mb-3
+        label(for="type" class="form-label") Type
+        input(
+          type="text"
+          class="form-control"
+          id="type"
+          name="fields[type_de_document]"
+          placeholder="Type du document"
+          value=data.type_de_document
+        )
+
+      input(
+        type="submit"
+        class="btn btn-primary"
+        value="Ajouter"
+      )
