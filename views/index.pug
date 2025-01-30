@@ -1,6 +1,9 @@
 extends layout
 
 block content
+  if success
+    .alert.alert-success.mb-4= success
+  p= "Vous êtes connecté en tant que " + user["firstname"]
   if documents.length
     table.table.table-bordered.table-striped.mt-5
       thead.table-dark
@@ -12,7 +15,11 @@ block content
         each document in documents
           tr
             td= document.fields.titre_avec_lien_vers_le_catalogue
-            td= document.fields.auteur
+            if document.fields.auteur.length === 0
+              td
+                i="Auteur inconnu"
+            else
+              td= document.fields.auteur
             if document.fields.dispo === true
               td Disponible
   else
