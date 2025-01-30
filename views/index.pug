@@ -9,6 +9,7 @@ block content
 
   if user["roles"].includes("ROLE_ADMIN")
     button.btn.btn-success.d-flex.justify-end.ms-auto.text-center(onclick="window.location.href='/documents/new'") Ajouter un document
+    button.btn.btn-primary.m-2(onclick="window.location.href='/users'") Gérer les utilisateurs
 
   if documents.length
     .article-grid

@@ -1,0 +1,54 @@
+extends layout
+
+block content
+  h1 Gestion des utilisateurs
+
+  .card.mb-5
+    .card-header
+      h2 Créer un utilisateur
+    .card-body
+      form(action="/users/create" method="POST")
+        .form-group
+          label(for="firstname") Prénom
+          input.form-control(type="text" name="firstname" required)
+        .form-group
+          label(for="lastname") Nom
+          input.form-control(type="text" name="lastname" required)
+        .form-group
+          label(for="email") Email
+          input.form-control(type="email" name="email" required)
+        .form-group
+          label(for="password") Mot de passe
+          input.form-control(type="password" name="password" required)
+        .form-group
+          label(for="roles") Rôle
+          select.form-control(name="roles" required)
+            option(value="ROLE_USER") Utilisateur
+            option(value="ROLE_ADMIN") Administrateur
+        button.btn.btn-primary(type="submit") Créer un utilisateur
+
+  if users.length
+    .card
+      .card-header
+        h2 Liste des utilisateurs
+      .card-body
+        table.table.table-bordered.table-striped.mt-3
+          thead.table-dark
+            tr
+              th Prénom
+              th Nom
+              th Email
+              th Suppression
+          tbody
+            each user in users
+              if !user.roles.includes("ROLE_ADMIN")
+                tr
+                  td= user.firstname
+                  td= user.lastname
+                  td= user.email
+                  td
+                    form(action="/users/delete" method="POST")
+                      input(type="hidden" name="id" value=user._id)
+                      button.btn.btn-danger(type="submit") X
+  else
+    p Aucun utilisateur disponible
