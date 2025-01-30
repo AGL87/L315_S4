@@ -13,41 +13,32 @@ mongoose.connect(process.env.DATABASE, {
 
 // Création d'un utilisateur admin
 async function createAdmin() {  
-  const email = 'admin@example.com'; // Set the admin email
-  const password = 'admin'; // Set the admin password
-  const hashedPassword = SecurityService.hashPassword(password); // Hash the password
+  const email = 'admin@example.com'; 
+  const password = 'admin'; 
+  const hashedPassword = SecurityService.hashPassword(password);
 
   try {
-    // Check if the admin already exists
+    // Check si l'admin existe déjà
     const existingAdmin = await User.findOne({ email });
 
     if (existingAdmin) {
-      console.log('Admin already exists.');
-      return; // Exit if the admin already exists
+      console.log('Admin existe déjà');
+      return; 
     }
 
-    // Log the email and other details for debugging
-    console.log('Creating admin user with email:', email);
-
-    // If no admin exists, create a new one
+    // Si l'admin n'existe pas, on le crée
     const adminUser = new User({
       firstname: 'Admin',
       lastname: 'Admin',
-      email: email, // Make sure this is not null
+      email: email, 
       password: hashedPassword,
-      roles: ['ROLE_ADMIN'], // Assign the admin role
+      roles: ['ROLE_ADMIN'], // On lui donne le rôle d'admin
     });
 
-    // Check before saving if the email is null or undefined
-    if (!adminUser.email) {
-      console.error('Email is not set properly!');
-      return;
-    }
-
-    await adminUser.save(); // Save the new admin user to the database
-    console.log('Admin user created!');
+    await adminUser.save();
+    console.log('Admin ok');
   } catch (err) {
-    console.error('Error creating admin:', err);
+    console.error('Erreur:', err);
   }
 }
 
