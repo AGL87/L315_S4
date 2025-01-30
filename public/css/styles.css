@@ -1,17 +1,24 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: center; 
   height: 100vh;
 }
 
-button {
+.btnEmprunt {
   width:8rem;
   height:2rem;
   border-radius: 5px;
   color: white;
   background-color: #5cb85c;
 }
+
 .ramener {
   background-color: #d9534f;
 }
