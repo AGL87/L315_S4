@@ -8,43 +8,45 @@ const router = express.Router();
 const Document = mongoose.model('Document');
 
 const isAuthenticated = (req, res, next) => {
-    if (req.session && req.session.user) {
-        return next();
-    }
-    res.redirect('/auth/login');
+  if (req.session && req.session.user) {
+    return next();
+  }
+  res.redirect('/auth/login');
 };
 
 router.get('/documents', isAuthenticated, (req, res) => {
-    if (req.query["login_success"] === 'true') {
-        res.locals.success = 'Vous êtes maintenant connecté !';
-    }
+  if (req.query["login_success"] === 'true') {
+    res.locals.success = 'Vous êtes maintenant connecté !';
+  }
 
-    Document.find().limit(10)
-        .then((documents) => {
-            console.log(documents);
-            res.render('index', {
-                title: 'Medialogue', 
-                documents,
-                user: req.session.user,
-                isLoggedIn: !!req.session.user // Ajoute un booléen pour indiquer si l'utilisateur est connecté
-            });
-        })
-        .catch((error) => {
-            console.log(`Error fetching documents: ${error.message}`);
-            res.status(500).send('Sorry, something went wrong!');
-        });
+  if (req.query["newdoc_success"] === 'true') {
+    res.locals.success = 'Document ajouté !';
+  }
+
+  if (req.query["delete_success"] === 'true') {
+    res.locals.success = 'Document supprimé avec succès !';
+  }
+
+  Document.find()
+    .then((documents) => {
+      res.render('index', {
+        title: 'Medialogue',
+        documents,
+        user: req.session.user,
+        isLoggedIn: !!req.session.user // Ajoute un booléen pour indiquer si l'utilisateur est connecté
+      });
+    })
+    .catch((error) => {
+      console.log(`Error fetching documents: ${error.message}`);
+      res.status(500).send('Sorry, something went wrong!');
+    });
 });
 
-// Route vers le panel admin
-router.get('/admin', (req, res) => {
-    console.log('route /admin atteinte');
-    res.render('admin', {title: 'Admin'});
-});
 
 // Route vers le formulaire de création de document
 router.get('/documents/new', (req, res) => {
-    console.log('route /documents/new atteinte');
-    res.render('newdoc', {title: 'New Document'});
+  console.log('route /documents/new atteinte');
+  res.render('newdoc', { title: 'New Document' });
 });
 
 // Route POST pour ajouter un document
@@ -75,7 +77,7 @@ router.post('/documents/new', [
 
     document.save()
       .then(() => {
-        res.send('Document ajouté !');
+        res.redirect('/documents?newdoc_success=true');
         console.log(document);
       })
       .catch((err) => {
@@ -90,5 +92,20 @@ router.post('/documents/new', [
     });
   }
 });
+
+// Route pour supprimer un document
+router.post('/documents/delete', async (req, res) => {
+  try {
+    const documentId = req.body.id;
+    await Document.findByIdAndDelete(documentId);
+    
+    res.redirect('/documents?delete_success=true');
+  } catch (error) {
+    console.error(`Oups: ${error.message}`);
+  }
+});
+
+
+
 
 module.exports = router;
