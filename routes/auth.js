@@ -52,9 +52,9 @@ router.post('/register', async (req, res) => {
 
     try {
         const creation = await userDbService.createUser({
-            firstname,
-            lastname,
-            email,
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
             password: SecurityService.hashPassword(password),
             roles: ["ROLE_USER"]
         });
@@ -62,6 +62,7 @@ router.post('/register', async (req, res) => {
         if (creation.status === 201) {
             return res.redirect('/auth/login?registration_success=true');
         } else {
+            console.log(creation.message)
             let message = creation.message;
 
             if (message.includes("duplicate key error")) {

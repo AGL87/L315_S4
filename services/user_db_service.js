@@ -9,7 +9,11 @@ class UserDbService {
 
     async createUser(user) {
         try {
-            await User.create(user);
+            await User.create(
+                {
+                    ...user
+                }
+            );
             return {
                 status: 201,
                 message: 'User created successfully',
