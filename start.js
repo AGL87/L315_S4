@@ -3,7 +3,6 @@ require('dotenv').config();
 require('./models/Document');
 const User = require('./models/User');
 const mongoose = require('mongoose');
-const { UserDbService } = require('./services/user_db_service');
 const { SecurityService } = require('./services/security_service');
 
 mongoose.connect(process.env.DATABASE, {
