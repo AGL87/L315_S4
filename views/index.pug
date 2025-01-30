@@ -7,6 +7,7 @@ block content
 
   if user["roles"].includes("ROLE_ADMIN")
     button.btn.btn-success.m-2(onclick="window.location.href='/documents/new'") Ajouter un document
+    button.btn.btn-primary.m-2(onclick="window.location.href='/users'") Gérer les utilisateurs
 
   if documents.length
     table.table.table-bordered.table-striped.mt-5
@@ -36,4 +37,4 @@ block content
                   button.btn.btn-danger(type="submit") X
   else
     p Aucun document disponible :(
- 
+

@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require("express-session");
+const usersRouter = require('./routes/users');
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -21,6 +22,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routes);
 app.use('/auth', authRoutes);
+app.use('/users', usersRouter);
 
 
 module.exports = app;
