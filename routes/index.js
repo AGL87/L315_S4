@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('path');
 const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
+
 
 const router = express.Router();
 const Document = mongoose.model('Document');
