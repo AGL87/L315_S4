@@ -11,7 +11,7 @@ block content
         for error in errors
           li= error.msg
 
-    form(action="/newdoc" method="POST")
+    form(action="/documents/new" method="POST")
       div.mb-3
         label(for="titre" class="form-label") Titre
         input(

@@ -15,6 +15,6 @@ const userSchema = new mongoose.Schema({
     borrowedDocuments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Document' }]
 });
 
-userSchema.index({ 'fields.email': 1 }, { unique: true });
+//userSchema.index({ 'fields.email': 1 }, { unique: true });
 
 module.exports = mongoose.model('User', userSchema);

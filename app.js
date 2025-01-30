@@ -16,10 +16,11 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-//middleware to handle css properly
+// Middleware pour le css
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routes);
 app.use('/auth', authRoutes);
+
 
 module.exports = app;

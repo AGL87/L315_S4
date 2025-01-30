@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('path');
 const { check, validationResult } = require('express-validator');
-const { check, validationResult } = require('express-validator');
 
 
 const router = express.Router();
@@ -43,13 +42,13 @@ router.get('/admin', (req, res) => {
 });
 
 // Route vers le formulaire de création de document
-router.get('/newdoc', (req, res) => {
-    console.log('route /newdoc atteinte');
+router.get('/documents/new', (req, res) => {
+    console.log('route /documents/new atteinte');
     res.render('newdoc', {title: 'New Document'});
 });
 
 // Route POST pour ajouter un document
-router.post('/newdoc', [
+router.post('/documents/new', [
   check('fields[titre_avec_lien_vers_le_catalogue]')
     .isLength({ min: 1 })
     .withMessage('Entrez un titre'),
