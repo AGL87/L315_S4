@@ -7,9 +7,27 @@ html
     script(src="/jquery/jquery.min.js")
     script(src="/js/script.js")
     
-
   body
-    div.container
-      h1.text-center.mb-4 Medialogue
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      .container
+        a.navbar-brand(href='/') Medialogue
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.me-auto
+            li.nav-item
+              a.nav-link(href='/') Accueil
+            li.nav-item
+              a.nav-link(href='/documents') Documents
+          ul.navbar-nav
+            li.nav-item
+              if user
+                a.nav-link(href='/auth/logout') Déconnexion
+              else
+                a.nav-link(href='/auth/login') Connexion
 
+    .container.mt-4
       block content
+
+    footer.footer-block
+     p.copyright Copyright ©, tous les droits réservés à Julien Baby, Estelle Dabrinville, Amanda Hery-Prieto, Aymeric Leger Achard - CVTIC Université de Limoges, 2025.

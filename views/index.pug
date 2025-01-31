@@ -3,36 +3,58 @@ extends layout
 block content
   if success
     .alert.alert-success.mb-4= success
-  p= "Vous êtes connecté en tant que " + user["firstname"]
+
+    .page-title-block.mb-4
+      h1.page-title Tout nos articles
 
   if user["roles"].includes("ROLE_ADMIN")
-    button.btn.btn-success.m-2(onclick="window.location.href='/documents/new'") Ajouter un document
+    button.btn.btn-success.d-flex.justify-end.ms-auto.text-center(onclick="window.location.href='/documents/new'") Ajouter un document
 
   if documents.length
-    table.table.table-bordered.table-striped.mt-5
-      thead.table-dark
-        tr
-          th Titre
-          th Auteur
-          th Emprunt
-          if user["roles"].includes("ROLE_ADMIN")
-            th Suppression
-      tbody
-        each document in documents
-         tr(id=`${document.recordid}`)
-            td(class='titre-cell')= document.fields.titre_avec_lien_vers_le_catalogue
-            if !document.fields.auteur
-              td
-                i="Auteur inconnu"
-            else
-              td(class='auteur-cell')= document.fields.auteur
+    .article-grid
+      each document in documents
+        .article-card
+          .article-card-content
+            h2.article-title= document.fields.titre_avec_lien_vers_le_catalogue
+            p.article-author= document.fields.auteur || "Auteur inconnu"
+            p.article-type= document.fields.type_de_document
             if document.fields.dispo === true
-              td.d-flex.justify-content-center
-                button(class='btnEmprunt') Emprunter
-            if user["roles"].includes("ROLE_ADMIN")
-              td
-                form(action="/documents/delete" method="POST")
-                  input(type="hidden" name="id" value=document._id)
-                  button.btn.btn-danger(type="submit") X
+              button.btn.btn-primary.btnEmprunt Emprunter
+            if user && user.roles.includes("ROLE_ADMIN")
+              form(action="/documents/delete" method="POST" class="form-delete")
+                input(type="hidden" name="id" value=document._id)
+                button.btn.btn-danger.btn-sm.mt-2(type="submit") Supprimer
+    nav(aria-label='Page navigation')
+      ul.pagination.justify-content-center
+        if hasPreviousPage
+          li.page-item
+            a.page-link(href=`/documents?page=${previousPage}`) Précédent
+
+        - var startPage = Math.max(1, currentPage - 2)
+        - var endPage = Math.min(totalPages, startPage + 4)
+        - if (endPage - startPage < 4 && startPage > 1)
+          - startPage = Math.max(1, endPage - 4)
+
+        if startPage > 1
+          li.page-item
+            a.page-link(href=`/documents?page=1`) 1
+          if startPage > 2
+            li.page-item.disabled
+              span.page-link ...
+
+        - for (let i = startPage; i <= endPage; i++)
+          li.page-item(class=currentPage === i ? 'active' : '')
+            a.page-link(href=`/documents?page=${i}`)= i
+
+        if endPage < totalPages
+          if endPage < totalPages - 1
+            li.page-item.disabled
+              span.page-link ...
+          li.page-item
+            a.page-link(href=`/documents?page=${totalPages}`)= totalPages
+
+        if hasNextPage
+          li.page-item
+            a.page-link(href=`/documents?page=${nextPage}`) Suivant
   else
     p Aucun document disponible :(
