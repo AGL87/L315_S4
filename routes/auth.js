@@ -127,4 +127,10 @@ router.post('/login', async (req, res) => {
 
 });
 
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/?logout_success=true');
+    });
+});
+
 module.exports = router;

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 require('path');
 const { check, validationResult } = require('express-validator');
 
-
 const router = express.Router();
 const Document = mongoose.model('Document');
 
@@ -14,7 +13,7 @@ const isAuthenticated = (req, res, next) => {
   res.redirect('/auth/login');
 };
 
-router.get('/documents', isAuthenticated, (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
   if (req.query["login_success"] === 'true') {
     res.locals.success = 'Vous êtes maintenant connecté !';
   }
@@ -27,30 +26,47 @@ router.get('/documents', isAuthenticated, (req, res) => {
     res.locals.success = 'Document supprimé avec succès !';
   }
 
-  Document.find().limit(10)
-    .then((documents) => {
-      res.render('index', {
-        title: 'Medialogue',
-        documents,
-        user: req.session.user,
-        isLoggedIn: !!req.session.user // Ajoute un booléen pour indiquer si l'utilisateur est connecté
-      });
-    })
-    .catch((error) => {
-      console.log(`Error fetching documents: ${error.message}`);
-      res.status(500).send('Sorry, something went wrong!');
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  try {
+    const totalDocuments = await Document.countDocuments();
+    const totalPages = Math.ceil(totalDocuments / limit);
+
+    const documents = await Document.find()
+        .sort({ record_timestamp: -1 })
+        .skip(skip)
+        .limit(limit);
+
+    res.render('index', {
+      title: 'Medialogue',
+      documents,
+      user: req.session.user,
+      isLoggedIn: !!req.session.user,
+      currentPage: page,
+      totalPages: totalPages,
+      hasNextPage: page < totalPages,
+      hasPreviousPage: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      lastPage: totalPages
     });
+  } catch (error) {
+    console.log(`Error getting documents: ${error.message}`);
+    res.status(500).send('Une erreur est survenue lors de la récupération des documents !');
+  }
 });
 
 
 // Route vers le formulaire de création de document
-router.get('/documents/new', (req, res) => {
+router.get('/new', (req, res) => {
   console.log('route /documents/new atteinte');
   res.render('newdoc', { title: 'New Document' });
 });
 
 // Route POST pour ajouter un document
-router.post('/documents/new', [
+router.post('/new', [
   check('fields[titre_avec_lien_vers_le_catalogue]')
     .isLength({ min: 1 })
     .withMessage('Entrez un titre'),
@@ -94,7 +110,7 @@ router.post('/documents/new', [
 });
 
 // Route pour supprimer un document
-router.post('/documents/delete', async (req, res) => {
+router.post('/delete', async (req, res) => {
   try {
     const documentId = req.body.id;
     await Document.findByIdAndDelete(documentId);
@@ -104,8 +120,5 @@ router.post('/documents/delete', async (req, res) => {
     console.error(`Oups: ${error.message}`);
   }
 });
-
-
-
 
 module.exports = router;
