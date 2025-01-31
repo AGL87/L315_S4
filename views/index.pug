@@ -34,5 +34,37 @@ block content
                 form(action="/documents/delete" method="POST")
                   input(type="hidden" name="id" value=document._id)
                   button.btn.btn-danger(type="submit") X
+    nav(aria-label='Page navigation')
+      ul.pagination.justify-content-center
+        if hasPreviousPage
+          li.page-item
+            a.page-link(href=`/documents?page=${previousPage}`) Précédent
+
+        - var startPage = Math.max(1, currentPage - 2)
+        - var endPage = Math.min(totalPages, startPage + 4)
+        - if (endPage - startPage < 4 && startPage > 1)
+          - startPage = Math.max(1, endPage - 4)
+
+        if startPage > 1
+          li.page-item
+            a.page-link(href=`/documents?page=1`) 1
+          if startPage > 2
+            li.page-item.disabled
+              span.page-link ...
+
+        - for (let i = startPage; i <= endPage; i++)
+          li.page-item(class=currentPage === i ? 'active' : '')
+            a.page-link(href=`/documents?page=${i}`)= i
+
+        if endPage < totalPages
+          if endPage < totalPages - 1
+            li.page-item.disabled
+              span.page-link ...
+          li.page-item
+            a.page-link(href=`/documents?page=${totalPages}`)= totalPages
+
+        if hasNextPage
+          li.page-item
+            a.page-link(href=`/documents?page=${nextPage}`) Suivant
   else
     p Aucun document disponible :(

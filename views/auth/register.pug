@@ -1,31 +1,35 @@
 extends ../layout
 
 block content
-  .container
-    h2.mb-4 Inscription
+  .login-container
+    h2.login-title Inscription
 
     if error
       .alert.alert-danger.mb-4= error
 
-    form.form-block(action="/auth/register" method="POST")
-      .form-group.mb-3
+    form.login-form(action="/auth/register" method="POST")
+      .form-group
         label.form-label(for="firstname") Prénom
         input#firstname.form-control(type="text" name="firstname" value=formData && formData.firstname required)
 
-      .form-group.mb-3
+      .form-group
         label.form-label(for="lastname") Nom
         input#lastname.form-control(type="text" name="lastname" value=formData && formData.lastname required)
 
-      .form-group.mb-3
+      .form-group
         label.form-label(for="email") Email
         input#email.form-control(type="email" name="email" value=formData && formData.email required)
 
-      .form-group.mb-3
+      .form-group
         label.form-label(for="password") Mot de passe
         input#password.form-control(type="password" name="password" required)
 
-      .form-group.mb-3
+      .form-group
         label.form-label(for="repeat_password") Répéter mot de passe
         input#repeat_password.form-control(type="password" name="repeat_password" required)
 
       button.btn.btn-primary(type="submit") S'inscrire
+
+    .login-links
+      p Vous avez déjà un compte ?
+        a(href="/auth/login")  Connectez-vous ici

@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = require('./routes/index');
 const authRoutes = require("./routes/auth")
+const homeRoutes = require("./routes/home")
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
@@ -20,7 +21,8 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/', routes);
+app.use('/', homeRoutes);
+app.use('/documents', routes);
 app.use('/auth', authRoutes);
 
 
