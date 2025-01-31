@@ -1,7 +1,10 @@
 extends layout
 
 block content
-  h1 Gestion des utilisateurs
+  if success
+    .alert.alert-success.mb-4= success
+  if error
+    .alert.alert-danger.mb-4= error
 
   .card.mb-5
     .card-header
@@ -38,17 +41,25 @@ block content
               th Prénom
               th Nom
               th Email
+              th Rôle
               th Suppression
           tbody
             each user in users
-              if !user.roles.includes("ROLE_ADMIN")
-                tr
-                  td= user.firstname
-                  td= user.lastname
-                  td= user.email
-                  td
+              tr
+                td= user.firstname
+                td= user.lastname
+                td= user.email
+                td
+                  if user.roles.includes("ROLE_ADMIN")
+                    span.is-admin Administrateur
+                  else
+                    span.is-user Utilisateur
+                td
+                  if !user.roles.includes("ROLE_ADMIN")
                     form(action="/users/delete" method="POST")
                       input(type="hidden" name="id" value=user._id)
                       button.btn.btn-danger(type="submit") X
+                  else
+                    span Action impossible
   else
     p Aucun utilisateur disponible
