@@ -18,6 +18,7 @@ app.set('view engine', 'pug');
 
 // Middleware pour le css
 app.use(express.static('public'));
+app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routes);
 app.use('/auth', authRoutes);

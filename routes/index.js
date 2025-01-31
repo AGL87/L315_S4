@@ -27,7 +27,7 @@ router.get('/documents', isAuthenticated, (req, res) => {
     res.locals.success = 'Document supprimé avec succès !';
   }
 
-  Document.find()
+  Document.find().limit(10)
     .then((documents) => {
       res.render('index', {
         title: 'Medialogue',
@@ -98,7 +98,7 @@ router.post('/documents/delete', async (req, res) => {
   try {
     const documentId = req.body.id;
     await Document.findByIdAndDelete(documentId);
-    
+
     res.redirect('/documents?delete_success=true');
   } catch (error) {
     console.error(`Oups: ${error.message}`);
