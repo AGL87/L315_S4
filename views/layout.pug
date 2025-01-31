@@ -19,6 +19,9 @@ html
               a.nav-link(href='/') Accueil
             li.nav-item
               a.nav-link(href='/documents') Documents
+            if user && user.roles.includes("ROLE_ADMIN")
+              li.nav-item
+                a.nav-link(href='/users') Utilisateurs
           ul.navbar-nav
             li.nav-item
               if user
