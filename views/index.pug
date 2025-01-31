@@ -3,7 +3,9 @@ extends layout
 block content
   if success
     .alert.alert-success.mb-4= success
-  p= "Vous êtes connecté en tant que " + user["firstname"]
+
+    .page-title-block.mb-4
+      h1.page-title Tout nos articles
 
   if user["roles"].includes("ROLE_ADMIN")
     button.btn.btn-success.m-2(onclick="window.location.href='/documents/new'") Ajouter un document
