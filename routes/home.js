@@ -6,7 +6,6 @@ const User = mongoose.model('User');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    
     if (req.query["login_success"] === 'true') {
         res.locals.success = 'Vous êtes maintenant connecté !';
     }
@@ -62,7 +61,7 @@ router.post('/emprunt', async (req, res)=> {
             },
             {new:true}
             );
-            await Document.findByIdAndUpdate(docId, { 'fields.dispo': dispo});
+            await Document.findByIdAndUpdate(docId, { 'fields.dispo': !dispo});
             //only added if not already there 
         console.log('Mise a jour: ', result);
         return res.status(200).json({message: `le livre a bien été emprunté `})
@@ -91,7 +90,7 @@ router.post('/retour', async (req, res)=> {
             {new: true}
         );
 
-        await Document.findByIdAndUpdate(docId, { 'fields.dispo': dispo});
+        await Document.findByIdAndUpdate(docId, { 'fields.dispo': !dispo});
             //only added if not already there 
         console.log('Mise a jour: ', result);
         res.status(200).json({message : `Document retourné par l\'utilisateur`});

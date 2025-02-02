@@ -40,7 +40,8 @@ class UserDbService {
                 lastname: 1,
                 email: 1,
                 roles: 1,
-                password: 1
+                password: 1,
+                borrowedDocuments: 1
             });
         } catch (error) {
             throw new Error('Error fetching user by email: ' + error.message);
