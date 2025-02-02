@@ -93,44 +93,44 @@ router.get('/login', (req, res) => {
     res.render('auth/login', { title: 'Connexion' });
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => { 
+    const userDbService = new UserDbService(); 
+    const { email, password } = req.body; 
+    
+    if (!email ||!password) { 
+        return res.render('auth/login', { 
+            title: 'Connexion', 
+            error: 'Tous les champs sont obligatoires.' 
+        }); 
+    } 
+    
+    try { 
+        const user = await userDbService.getUserByEmail(email); 
+            if (user === null || user === undefined ||!SecurityService.comparePasswords(password, user["password"])) { 
+                return res.render('auth/login', { 
+                    title: 'Connexion', 
+                    error: 'L\'adresse email ou le mot de passe est incorrect.' 
+                }); 
+            } 
+            req.session.user = user; 
+            req.session.userId = user._id; 
+            res.locals.userId = user._id;
+             res.redirect('/documents?login_success=true'); 
+             console.log(req.session.userId);   
+             console.log(req.session.user);  
+        } 
+    catch (error) { 
+        console.error(error); 
+        return res.render('auth/login', { 
+            title: 'Connexion', 
+            error: 'Une erreur est survenue lors de la connexion. Veuillez réessayer.' 
+        }); 
+    } 
+}); 
 
-    const userDbService = new UserDbService();
-    const { email, password } = req.body;
-
-    if (!email ||!password) {
-        return res.render('auth/login', {
-            title: 'Connexion',
-            error: 'Tous les champs sont obligatoires.'
-        });
-    }
-
-    try {
-        const user = await userDbService.getUserByEmail(email);
-
-        if (user === null || user === undefined  ||!SecurityService.comparePasswords(password, user["password"])) {
-            return res.render('auth/login', {
-                title: 'Connexion',
-                error: 'L\'adresse email ou le mot de passe est incorrect.'
-            });
-        }
-
-        req.session.user = user;
-        res.redirect('/documents?login_success=true');
-    } catch (error) {
-        console.error(error);
-        return res.render('auth/login', {
-            title: 'Connexion',
-            error: 'Une erreur est survenue lors de la connexion. Veuillez réessayer.'
-        });
-    }
-
-});
-
-router.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/?logout_success=true');
-    });
-});
-
+router.get('/logout', (req, res) => { 
+    req.session.destroy(() => { 
+        res.redirect('/?logout_success=true'); 
+    }); 
+}); 
 module.exports = router;

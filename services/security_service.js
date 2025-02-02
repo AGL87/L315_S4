@@ -12,6 +12,13 @@ class SecurityService {
     static comparePasswords(plainPassword, hashedPassword) {
         return bcrypt.compareSync(plainPassword, hashedPassword);
     }
+
+
+     getAuthenticatedUser(req) {
+          // Logique pour vérifier l'authentification de l'utilisateur
+          return req.user ? req.user.id : null;
+        }
+      
 }
 
 module.exports = { SecurityService };

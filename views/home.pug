@@ -15,8 +15,8 @@ block content
                         h2.article-title= document.fields.titre_avec_lien_vers_le_catalogue
                         p.article-author= document.fields.auteur || "Auteur inconnu"
                         p.article-type= document.fields.type_de_document
-                        if user && document.fields.dispo === true
-                            button.btn.btn-primary.btnEmprunt Emprunter
+                        if user && document.fields.dispo ===true
+                           button(id=documents._id).btn.btn-primary.btnEmprunt Emprunter
                         if user && user.roles.includes("ROLE_ADMIN")
                             form(action="/documents/delete" method="POST" class="form-delete")
                                 input(type="hidden" name="id" value=document._id)

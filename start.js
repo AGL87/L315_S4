@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 require('./models/Document');
-const User = require('./models/user');
+const User = require('./models/User');
 const mongoose = require('mongoose');
 const { SecurityService } = require('./services/security_service');
 
