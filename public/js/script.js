@@ -1,69 +1,51 @@
-/*document.addEventListener('DOMContentLoaded', function() {
-    //need to pass the clicked button in parameters
-    function bookAction(button) {
-        button.classList.toggle('ramener');
-        if (button.innerHTML === 'Emprunter') {
-            button.innerHTML = 'Ramener';
-        } else {
-            button.innerHTML = 'Emprunter';
-        }
-    }
-
-    const btnsEmprunt = document.querySelectorAll('.btnEmprunt');
-    btnsEmprunt.forEach(function(button) {
-        button.addEventListener('click', function() {
-            bookAction(button);
-            var titre=document.querySelector('.ramener').value;
-        });
-    });
-*/
-
-
 $(document).ready(function() {
-    var bookTab=[];
-     //need to pass the clicked button in parameters 
-        if (typeof jQuery !== 'undefined') {
-          console.log("jQuery est chargé et fonctionne correctement.");
-        } else {
-          console.error("jQuery n'est pas chargé.");
-        }
-    //with the help of copilot!
-        function escapeSelector(selector) {
-          return selector.replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
-        }
-    
+ 
     function bookAction(button) {
-        console.log("bookAction a été appelé");
-        let docId=$(button).closest('tr').attr('id');
-        //console.log(docId); 
-        let ligne=$(`#${docId}`);
-        let auteur=ligne.find('td.auteur-cell').text();
-        //console.log(auteur);
-        let titre=ligne.find('td.titre-cell').text(); 
+            
+    //console.log('UserId:', userId);
+    let docId=$(button).attr('id');
         
-        $(button).toggleClass('ramener');
-        if ($(button).html() === 'Emprunter') {
-            $(button).html('Ramener'); 
-      
-        bookTab.push({
-            id: docId,
-            titre: titre,
-            auteur: auteur,
-        })
-        } else {
-            $(button).html('Emprunter');
-            bookTab.pop({
-                id: docId,
-                titre: titre,
-                auteur: auteur,
-            })
-        } 
-        //console.log(titre);
-        //each book that is clicked and red (like meaning borrowed) is pushed into the tab
-       console.log(bookTab);
-    }
+    //console.log('document Id:', docId); 
+            
+    let toBeReturned = $(button).hasClass('ramener');
+    let dispoStatus = toBeReturned ? false : true ;
+    let url = toBeReturned ? '/retour': '/emprunt';
+           
+    //console.log(`URL appelée: ${url}`);
+    //console.log(`Statut de disponibilité: ${dispoStatus}`);
 
-    //links all buttons to the click event
+    //server request depending on route in url variable /emprunt or /retour
+    fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    docId: docId,
+                    dispo: dispoStatus
+                })
+            })
+        .then(response => {
+            if(response.status=== 400) {
+                return response.json().then(data => {
+                    throw new Error(data.message);
+                })
+            }
+            else if(response.status === 200){
+                    return response.json().then(data=> {
+                        alert (data.message)
+                    })
+            }
+            })
+            .catch(error =>  alert(error.message));
+    
+      //updating class and text on button
+        $(button).toggleClass('ramener');
+        $(button).text(toBeReturned ? 'Emprunter' : 'Ramener');
+    //console.log(`Classe du bouton après mise à jour: ${$(button).attr('class')}`);
+    //console.log(`Texte du bouton après mise à jour: ${$(button).text()}`);
+}
     $('.btnEmprunt').each(function() {
         $(this).on('click', function() {
             bookAction(this);

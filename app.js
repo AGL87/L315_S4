@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const session = require("express-session");
 const usersRouter = require('./routes/users');
 
+app.use(express.json());
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,

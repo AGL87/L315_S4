@@ -11,6 +11,10 @@ block content
     .d-flex.align-items-center.justify-content-end
       a.btn.btn-success.d-flex.text-center(href="/documents/new") Ajouter un document
 
+  - function objectIdEquals(id1, id2) {
+  -   return id1.toString() === id2.toString();
+  - }
+
   if documents.length
     .article-grid
       each document in documents
@@ -20,7 +24,9 @@ block content
             p.article-author= document.fields.auteur || "Auteur inconnu"
             p.article-type= document.fields.type_de_document
             if document.fields.dispo === true
-              button.btn.btn-primary.btnEmprunt Emprunter
+              button(id=document._id).btn.btn-primary.btnEmprunt Emprunter
+            else if document.fields.dispo === false && user && user.borrowedDocuments && user.borrowedDocuments.some(id => objectIdEquals(id, document._id))
+              button(id=document._id).btn.btn-primary.btnEmprunt.ramener Ramener
             if user && user.roles.includes("ROLE_ADMIN")
               form(action="/documents/delete" method="POST" class="form-delete")
                 input(type="hidden" name="id" value=document._id)

@@ -7,6 +7,10 @@ block content
     .page-title-block
         h1.page-title Nos derniers articles
 
+    - function objectIdEquals(id1, id2) {
+    -   return id1.toString() === id2.toString();
+    - }
+
     if documents.length
         .article-grid
             each document in documents
@@ -15,8 +19,10 @@ block content
                         h2.article-title= document.fields.titre_avec_lien_vers_le_catalogue
                         p.article-author= document.fields.auteur || "Auteur inconnu"
                         p.article-type= document.fields.type_de_document
-                        if user && document.fields.dispo === true
-                            button.btn.btn-primary.btnEmprunt Emprunter
+                        if document.fields.dispo === true
+                            button(id=document._id).btn.btn-primary.btnEmprunt Emprunter
+                        else if document.fields.dispo === false && user && user.borrowedDocuments && user.borrowedDocuments.some(id => objectIdEquals(id, document._id))
+                            button(id=document._id).btn.btn-primary.btnEmprunt.ramener Ramener
                         if user && user.roles.includes("ROLE_ADMIN")
                             form(action="/documents/delete" method="POST" class="form-delete")
                                 input(type="hidden" name="id" value=document._id)

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 require('./models/Document');
-const User = require('./models/user');
+const User = require('./models/User');
 const mongoose = require('mongoose');
 const { SecurityService } = require('./services/security_service');
 
@@ -52,6 +52,6 @@ async function createAdmin() {
   });
 
 const app = require('./app');
-const server = app.listen(3000, () => {
+const server = app.listen(3001, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });
